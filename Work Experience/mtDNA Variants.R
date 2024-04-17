@@ -7,6 +7,10 @@ library(stringr)
 library(ggplot2)
 library(magrittr)
 
+setwd(
+  "C:/Users/sethd/OneDrive/Documents/Programming/Bioinformatics Work Exp/data"
+  )
+
 # Data
 pgen = read.csv('MITOMAP.csv') %>%
   mutate(Mutation = str_extract(Allele, "[^0-9]*$"),
@@ -40,8 +44,8 @@ m.freq = rbind(m.freq, data.frame(POS = 152,
                                   FREQ = 1,
                                   AF = 0.1,
                                   PGENIC = as.factor(1)))
-# dummy data to provide insertion(?) var at pos 152  which is pgenic 
-# (in addition to the T>C SNP var at 152)
+# dummy data to pretentd there is an insertion var at pos 152  which is pgenic 
+# (in addition to the T>C SNP at 152)
 
 m.freq = arrange(m.freq, POS)
 nvnts = nrow(m.freq)
@@ -118,9 +122,12 @@ vnt.compare = data.frame(POS = m.freq$POS,
 m.RMSE = sqrt(sum(vnt.compare$resid.sq)/nrow(vnt.compare))
   # Root Mean square Error of the sample AF
 
-alpha = 1 # adjusts limit for considering data as an outlier
+alpha = 1.5 # adjusts limit for considering data as an outlier
 m.outliers = vnt.compare %>%
   filter(resid >= alpha*m.RMSE)
+
+m.outliers = m.outliers %>%  
+  mutate(outlier = as.factor(rep(1, nrow(m.outliers))))
   # all variants in m. with an AF significantly different to the corresponding
   # variant in ukbb (significance determined by alpha)
 
@@ -128,6 +135,9 @@ m.outliers = vnt.compare %>%
 
 
 # Scatter plot of UKBB AF against sample AF
+
+# check for a difference in correlation between sampleAF and ukbbAF (effectively
+# the actual AF) when pathogenic variants are removed
 afplot = data.frame(POS = ukbb.compare$POS,
                     sampleAF = m.freq$AF,
                     ukbbAF = ukbb.compare$AF,
@@ -156,6 +166,11 @@ ggplot(afplot, aes(ukbbAF, sampleAF, col = PGENIC)) +
   geom_abline(slope = noP_lmodel$coefficients[2],
               intercept = noP_lmodel$coefficients[1],
               col = 'red')
+  # currently not too reliable for low AF variants in small sample data sizes
+
+  # [ukbb data has AF << 0.1 but in samples with say only n=10, the AF is either
+  # 0 or 0.1 so could be counted as an outlier when it is just a regular
+  # harmless variant to be expected in each person]
 
 alpha = 1.5
 in.alpha.sd = c(lmodel$coefficients[2] - alpha*lmodel.summ$coefficients[2,2] <=
@@ -190,7 +205,7 @@ circos.genomicLabels(m.genelims, labels.column = 4,
                      connection_height = mm_h(0.1),
                      line_lty = 'blank',
                      padding = 0,
-                     track.margin = c(0, 0.01)) 
+                     track.margin = c(0.16, 0.01)) 
 circos.track(ylim = c(0, 1), 
              track.height = 0.08,
              bg.col = 'grey93',
@@ -198,6 +213,7 @@ circos.track(ylim = c(0, 1),
              cell.padding = c(0,0,0,0),
              panel.fun = function(x, y) {
                palette('default')
+               circos.xaxis(direction = 'outside', labels.cex = 0.6)
                circos.rect(xleft = m.genelims$start,
                            xright = m.genelims$end,
                            ybottom = rep(0, ngenes),
@@ -205,7 +221,7 @@ circos.track(ylim = c(0, 1),
                            col = as.factor(m.genelims$GENE),
                )
              })
-circos.track(ylim = c(0,1), 
+circos.track(ylim = c(0,1),
              bg.col = 'grey93',
              track.margin = c(0.01, 0),
              panel.fun = function(x,y) {
