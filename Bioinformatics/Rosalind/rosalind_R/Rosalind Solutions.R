@@ -48,7 +48,7 @@ wabbit = function(n, k){
   ifelse(n>2, wabbit(n-1, k) + k*wabbit(n-2, k), 1)
 }
 
-megawab = wabbit(33, 5)
+megawab = wabbit(3, 5)
 
 # 5 - Computing GC Content
 s5 = str_flatten(scan(file = 'rosalind_gc.txt', what = 'character'))
@@ -121,9 +121,10 @@ s9.matches.start = sapply(s9.matches, function(x){x[,1]})[,1]
   # this generalises if finding matches to multiples strings in s9
 s9.matches.start
 
+# 10 - Consensus and Profile
+s10 = 
 
-
-# 11 - Mortal Fibonacci Rabbits~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+# 11 - Mortal Fibonacci Rabbits~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ded = function(n,m){
   if (n==0) return(0);
   if (n==1) return(1);
