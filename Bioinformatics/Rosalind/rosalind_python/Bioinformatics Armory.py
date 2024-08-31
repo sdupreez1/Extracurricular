@@ -1,13 +1,20 @@
 from Bio.Seq import Seq
 from Bio import Entrez, SeqIO
 import pandas as pd
+import os
 
 pd.options.display.width = 0
+
+# Allows me to access data folder within project working directory
+path = os.path.realpath(__file__)
+dir = os.path.dirname(path)
+dir = dir+'\data\\'
+os.chdir(dir)
 
 # 1 - Introduction to the Bioinformatics Armory
 dna_bases = ['A', 'C', 'G', 'T']
 
-s1 = Seq(open('rosalind_ini.txt', 'r').read())
+s1 = Seq(open('rosalind_ini.txt').read())
 s1_counts = [s1.count(base) for base in dna_bases]
 
 # 2 - GenBank Introduciton
