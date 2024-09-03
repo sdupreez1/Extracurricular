@@ -106,7 +106,7 @@ with open('data/rosalind_rvco.txt') as infile10:
     seq10 = [s.seq for s in seq10]
     rev_comp10 = [s.reverse_complement() for s in seq10]
     rev_same10 = [s for s in seq10 if rev_comp10[seq10.index(s)] == s]
-    len(rev_same10)
+len(rev_same10)
     
 # 12 - Base Quality Distrtibution
 with open('data/rosalind_bphr.txt') as infile12:
@@ -120,4 +120,13 @@ with open('data/rosalind_bphr.txt') as infile12:
         mean([p[i] for p in phd_list12]) for i in range(len(phd_list12[0]))
         ]
     invalid_phds12 = [base for base in phd_avg12 if base < int(crit12)]
-    len(invalid_phds12)
+len(invalid_phds12)
+
+# 14 - Finding Genes with ORFs (Open Reading Frames) [Online - SMS2]
+with open('data/test.txt') as infile14:
+    prts14 = infile14.readlines()
+    prtlens14 = list(map(len, prts14))
+    whichlong14 = prtlens14.index(max(prtlens14))
+print(prts14[whichlong14])
+
+
