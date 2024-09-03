@@ -128,5 +128,3 @@ with open('data/test.txt') as infile14:
     prtlens14 = list(map(len, prts14))
     whichlong14 = prtlens14.index(max(prtlens14))
 print(prts14[whichlong14])
-
-
