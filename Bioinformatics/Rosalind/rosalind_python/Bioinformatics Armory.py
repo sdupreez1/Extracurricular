@@ -35,6 +35,8 @@ with open('data/rosalind_frmt.txt') as idfile3:
     minseq3 = records3[whichmin3]
     
     fastamin3 = '>{}\n{}'.format(minseq3.description, minseq3.seq)
+    
+# 4 - Motif Discovery [Online - MEME]
 
 # 5 - Pairwise Global Alignment (Emboss Scoring Matricies) [Online - Emboss]
 with open('data/rosalind_need.txt') as idfile5:
@@ -108,6 +110,9 @@ with open('data/rosalind_rvco.txt') as infile10:
     rev_same10 = [s for s in seq10 if rev_comp10[seq10.index(s)] == s]
 len(rev_same10)
     
+# 11 - Suboptimal Local Alignent (Search for Common Substrings/
+# Potential Transposons) [Online - Lalign (EBI)]
+
 # 12 - Base Quality Distrtibution
 with open('data/rosalind_bphr.txt') as infile12:
     crit12, fastq12 = infile12.readline(), infile12.read()
@@ -122,9 +127,15 @@ with open('data/rosalind_bphr.txt') as infile12:
     invalid_phds12 = [base for base in phd_avg12 if base < int(crit12)]
 len(invalid_phds12)
 
+#13 - Global Multiple Alignment (Align Strings to Check for Similarity)
+# [Online - Clustal (EBI)]
+
 # 14 - Finding Genes with ORFs (Open Reading Frames) [Online - SMS2]
 with open('data/test.txt') as infile14:
     prts14 = infile14.readlines()
     prtlens14 = list(map(len, prts14))
     whichlong14 = prtlens14.index(max(prtlens14))
 print(prts14[whichlong14])
+
+#15 - Base Filtration by Quality (Remove Low Quality Bases in FASTQ from Ends)
+# [Online - Galaxy FASTQ Quality Trimmer]
