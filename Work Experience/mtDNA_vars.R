@@ -7,10 +7,6 @@ library(stringr)
 library(ggplot2)
 library(magrittr)
 
-setwd(
-  "C:/Users/sethd/OneDrive/Documents/Programming/Bioinformatics Work Exp/data"
-  )
-
 # Data
 pgen = read.csv('MITOMAP.csv') %>%
   mutate(Mutation = str_extract(Allele, "[^0-9]*$"),
